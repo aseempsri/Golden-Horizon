@@ -30,6 +30,12 @@ This document describes every formula used in the **Golden Horizon** retirement 
 | \(N_{future}\) | `futureCarsToBuy` | Number of future cars to buy (0–3) |
 | \(C_1, A_1\) | `car1Cost`, `car1Age` | Lump-sum cost and purchase age for future car 1 |
 | \(C_2, A_2\) | `car2Cost`, `car2Age` | Lump-sum cost and purchase age for future car 2 |
+| \(T_{base}\) | `bigTravelBaseCost` | First big-travel lump sum (default ₹10L) |
+| \(\delta_T\) | `bigTravelCostYoYPct` | Annual cost escalation on big travel (default 10%) |
+| \(\Delta\) | `travelIntervalYears` | Years between big trips (default 3) |
+| \(W_T\) | `travelWindowYears` | Years from retirement to schedule auto trips (default 25) |
+| \(N_{max}\) | `maxBigTravels` | Maximum big trips in the window (default 10) |
+| \(A_{travel}\) | `travelStopAutoAtAge` | No auto big trips from this age (default 70) |
 
 ---
 
@@ -56,6 +62,7 @@ This document describes every formula used in the **Golden Horizon** retirement 
 | 5 | **Monthly rent growth rate** | \(\displaystyle g_m = (1 + g_{annual}/100)^{1/12} - 1\) | Used only when `housingType === 'rental'`. If you own your house, rent is 0 and this formula is not applied. |
 | 6 | **Car maintenance (working years)** | \(\displaystyle M_{cars} = N_{cars} \times C_{maint}\) | Fixed monthly outflow deducted from salary surplus while you are still working. |
 | 7 | **Future car lump-sum** | At age \(a\): if \(N_{future} \ge 1\) and \(a = A_1\), add \(C_1\); if \(N_{future} \ge 2\) and \(a = A_2\), add \(C_2\) | One-time deduction from \(P\) at the start of that calendar year (before the monthly loop runs). |
+| 7b | **Big travel lump-sum** | Trip at years \(t = 0, \Delta, 2\Delta, \ldots\) from \(A_{ret}\): cost \(T_{base} \times (1 + \delta_T/100)^t\); while \(t < W_T\), trip count \(\le N_{max}\), and \(A_{ret} + t < A_{travel}\) | Deducted once per scheduled year after retirement only. Short trips are excluded. After age \(A_{travel}\), travel is not auto-deducted. |
 | 8 | **Monthly corpus growth** | \(\displaystyle P \leftarrow P \times (1 + r_m)\) | Applied every month to the entire liquid portfolio. |
 | 9 | **Working-year surplus** | \(\displaystyle \text{surplus} = S - E - R_{rent} - M_{cars}\) | Amount added to the corpus each month while age \(a < A_{ret}\). No salary is included after retirement. |
 | 10 | **Working-year portfolio update** | \(\displaystyle P \leftarrow P + \text{surplus}\) | Applied after monthly growth (formula 8) during working years. |
@@ -82,6 +89,7 @@ For each age \(a\) from `currentAge` (\(A\)) to `PLAN_TO_AGE` (\(A_{end} = 90\))
 
 ```
 1. If a lump-sum car purchase occurs at this age → P = P − car cost
+1b. If retired and a scheduled big travel occurs at this age → P = P − travel cost
 2. P = P × (1 + r_m)                         // investment growth on full corpus
 3. If retired (a ≥ A_ret):
        P = P − W − R_rent (if rental)
@@ -127,6 +135,8 @@ The following are **not** included in any formula:
 | Non-liquid assets (e.g. owned house value) | Only liquid `totalNetWorth` is used |
 | Salary after \(A_{ret}\) | Complete retirement means zero work income |
 | House price appreciation | Own house = no rent line in the simulation |
+| Short / leisure travel | Self-funded; not in corpus |
+| Big travel after age 70 | Customer choice; not auto-deducted in v1 |
 
 ---
 
@@ -135,5 +145,6 @@ The following are **not** included in any formula:
 | File | Role |
 |------|------|
 | `src/lib/calculator.ts` | Core simulation and retirement-age search |
+| `src/lib/travelPlan.ts` | Big-travel schedule builder |
 | `src/types.ts` | Input and result type definitions |
 | `src/constants.ts` | Default values, instrument config, `MIN_AGE` (45), `PLAN_TO_AGE` (90) |

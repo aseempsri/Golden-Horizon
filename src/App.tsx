@@ -3,12 +3,23 @@ import { motion } from 'framer-motion';
 import './App.css';
 import { PortfolioAllocator } from './components/PortfolioAllocator';
 import { ResultsPanel } from './components/ResultsPanel';
-import { APP_NAME, APP_TAGLINE, DEFAULT_INPUTS, MIN_AGE } from './constants';
+import {
+  APP_NAME,
+  APP_TAGLINE,
+  BIG_TRAVEL_BASE_COST,
+  DEFAULT_INPUTS,
+  MAX_BIG_TRAVELS,
+  MIN_AGE,
+  TRAVEL_INTERVAL_YEARS,
+  TRAVEL_STOP_AUTO_AT_AGE,
+  TRAVEL_WINDOW_YEARS,
+} from './constants';
 import {
   allocationTotal,
   findRetirementAge,
   getWeightedReturn,
 } from './lib/calculator';
+import { buildBigTravelSchedule, formatTravelCostLakhs } from './lib/travelPlan';
 import { clamp, formatINR } from './lib/format';
 import type {
   CalculatorInputs,
@@ -42,6 +53,9 @@ export default function App() {
   const [carMaintenanceMonthly, setCarMaintenanceMonthly] = useState(
     DEFAULT_INPUTS.carMaintenanceMonthly,
   );
+  const [enableTravelPlan, setEnableTravelPlan] = useState(
+    DEFAULT_INPUTS.enableTravelPlan,
+  );
   const [result, setResult] = useState<SimulationResult | null>(null);
 
   const inputs = useMemo(
@@ -64,6 +78,13 @@ export default function App() {
       monthlyWithdrawal,
       inflationPct,
       carMaintenanceMonthly,
+      enableTravelPlan,
+      travelIntervalYears: TRAVEL_INTERVAL_YEARS,
+      travelWindowYears: TRAVEL_WINDOW_YEARS,
+      maxBigTravels: MAX_BIG_TRAVELS,
+      bigTravelBaseCost: BIG_TRAVEL_BASE_COST,
+      bigTravelCostYoYPct: DEFAULT_INPUTS.bigTravelCostYoYPct,
+      travelStopAutoAtAge: TRAVEL_STOP_AUTO_AT_AGE,
     }),
     [
       currentAge,
@@ -84,7 +105,14 @@ export default function App() {
       monthlyWithdrawal,
       inflationPct,
       carMaintenanceMonthly,
+      enableTravelPlan,
     ],
+  );
+
+  const previewRetirementAge = result?.retirementAge ?? Math.max(MIN_AGE, currentAge);
+  const travelPreview = useMemo(
+    () => buildBigTravelSchedule(inputs, previewRetirementAge),
+    [inputs, previewRetirementAge],
   );
 
   const weightedReturn = useMemo(
@@ -345,6 +373,58 @@ export default function App() {
             </div>
 
             <div className="panel">
+              <h3 className="panel-title">Big travel plan</h3>
+              <div className="toggle-group">
+                <button
+                  type="button"
+                  className={`toggle-btn ${enableTravelPlan ? 'active' : ''}`}
+                  onClick={() => setEnableTravelPlan(true)}
+                >
+                  Include in plan
+                </button>
+                <button
+                  type="button"
+                  className={`toggle-btn ${!enableTravelPlan ? 'active' : ''}`}
+                  onClick={() => setEnableTravelPlan(false)}
+                >
+                  Exclude
+                </button>
+              </div>
+              {enableTravelPlan ? (
+                <>
+                  <p className="hint" style={{ marginTop: '0.75rem' }}>
+                    Up to {MAX_BIG_TRAVELS} big trips every {TRAVEL_INTERVAL_YEARS} years for{' '}
+                    {TRAVEL_WINDOW_YEARS} years from retirement. First trip costs{' '}
+                    {formatINR(BIG_TRAVEL_BASE_COST, true)}; each trip rises {DEFAULT_INPUTS.bigTravelCostYoYPct}% per
+                    year from retirement. Short trips are self-funded and not modeled. After age{' '}
+                    {TRAVEL_STOP_AUTO_AT_AGE}, travel is your choice — not deducted here.
+                  </p>
+                  <ul className="travel-schedule">
+                    {travelPreview.length > 0 ? (
+                      travelPreview.map((t) => (
+                        <li key={t.tripNumber}>
+                          Trip {t.tripNumber} at age {t.age} — {formatTravelCostLakhs(t.cost)}
+                        </li>
+                      ))
+                    ) : (
+                      <li>No trips scheduled (retirement too close to age {TRAVEL_STOP_AUTO_AT_AGE})</li>
+                    )}
+                  </ul>
+                  {travelPreview.length > 0 && travelPreview.length < MAX_BIG_TRAVELS && (
+                    <p className="hint">
+                      {travelPreview.length} of {MAX_BIG_TRAVELS} trips fit at {TRAVEL_INTERVAL_YEARS}-year
+                      spacing within {TRAVEL_WINDOW_YEARS} years before age {TRAVEL_STOP_AUTO_AT_AGE}.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="hint" style={{ marginTop: '0.75rem' }}>
+                  Big travel costs are excluded from corpus projections.
+                </p>
+              )}
+            </div>
+
+            <div className="panel">
               <h3 className="panel-title">Retirement withdrawals</h3>
               <div className="field-grid">
                 <div className="field">
@@ -395,8 +475,10 @@ export default function App() {
               assignments. Only liquid assets are modeled. We exclude rental income, pension,
               and business income. Pre-retirement, salary surplus (after expenses, rent, car
               upkeep) is added to your portfolio. After retirement, inflation-adjusted
-              withdrawals and rent continue until age 90. Your nominee receives whatever
-              corpus remains.
+              withdrawals, rent, and scheduled big travel (every 3 years, up to 10 in 25
+              years from retirement, costs rising 10% per year from retirement) continue
+              until age 90. Short trips and travel after age 70 are not auto-deducted.
+              Your nominee receives whatever corpus remains.
             </footer>
           </div>
 

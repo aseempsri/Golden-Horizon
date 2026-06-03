@@ -5,6 +5,14 @@ export const APP_TAGLINE = 'Retirement Freedom Planner';
 export const MIN_AGE = 45;
 export const PLAN_TO_AGE = 90;
 
+/** Big-travel plan defaults (v1) */
+export const TRAVEL_INTERVAL_YEARS = 3;
+export const TRAVEL_WINDOW_YEARS = 25;
+export const MAX_BIG_TRAVELS = 10;
+export const BIG_TRAVEL_BASE_COST = 10_00_000;
+export const BIG_TRAVEL_COST_YOY_PCT = 10;
+export const TRAVEL_STOP_AUTO_AT_AGE = 70;
+
 export const INSTRUMENTS: InstrumentConfig[] = [
   {
     key: 'fd',
@@ -72,4 +80,11 @@ export const DEFAULT_INPUTS = {
   monthlyWithdrawal: 2_00_000,
   inflationPct: 6,
   carMaintenanceMonthly: 20_000,
+  enableTravelPlan: true,
+  travelIntervalYears: TRAVEL_INTERVAL_YEARS,
+  travelWindowYears: TRAVEL_WINDOW_YEARS,
+  maxBigTravels: MAX_BIG_TRAVELS,
+  bigTravelBaseCost: BIG_TRAVEL_BASE_COST,
+  bigTravelCostYoYPct: BIG_TRAVEL_COST_YOY_PCT,
+  travelStopAutoAtAge: TRAVEL_STOP_AUTO_AT_AGE,
 };

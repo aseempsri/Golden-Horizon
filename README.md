@@ -32,6 +32,7 @@ Enable Pages once in repo **Settings → Pages → Build and deployment → Sour
 - Pre-retirement: salary surplus added to corpus; post-retirement: inflation-adjusted monthly withdrawals
 - Own home vs rental (10% annual rent increase by default)
 - Current and future car purchases with lump-sum costs at chosen ages
+- Big travel plan: up to 10 trips every 3 years for 25 years from retirement (₹10L start, +10% per year from retirement), auto-stops at age 70; short trips excluded
 - Nominee legacy (remaining liquid wealth at age 90)
 
 **Excluded:** rental income, pension, business income, and non-liquid assets.

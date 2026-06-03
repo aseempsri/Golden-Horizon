@@ -52,6 +52,13 @@ export interface CalculatorInputs {
   monthlyWithdrawal: number;
   inflationPct: number;
   carMaintenanceMonthly: number;
+  enableTravelPlan: boolean;
+  travelIntervalYears: number;
+  travelWindowYears: number;
+  maxBigTravels: number;
+  bigTravelBaseCost: number;
+  bigTravelCostYoYPct: number;
+  travelStopAutoAtAge: number;
 }
 
 export interface YearSnapshot {

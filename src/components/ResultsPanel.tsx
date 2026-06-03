@@ -34,6 +34,7 @@ export function ResultsPanel({ result, weightedReturn }: Props) {
     age: s.age,
     corpus: Math.round(s.portfolio / 1_00_000) / 100,
     label: formatINR(s.portfolio, true),
+    event: s.event,
   }));
 
   return (
@@ -126,11 +127,14 @@ export function ResultsPanel({ result, weightedReturn }: Props) {
                   border: '1px solid rgba(255,255,255,0.1)',
                   borderRadius: 8,
                 }}
-                formatter={(_, __, item) => [
-                  (item.payload as { label: string }).label,
-                  'Corpus',
-                ]}
-                labelFormatter={(age) => `Age ${age}`}
+                formatter={(_, __, item) => {
+                  const payload = item.payload as { label: string; event?: string };
+                  return [payload.label, 'Corpus'];
+                }}
+                labelFormatter={(age, items) => {
+                  const event = (items[0]?.payload as { event?: string } | undefined)?.event;
+                  return event ? `Age ${age} — ${event}` : `Age ${age}`;
+                }}
               />
               <Area
                 type="monotone"

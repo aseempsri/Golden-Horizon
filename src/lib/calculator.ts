@@ -1,4 +1,9 @@
 import { MIN_AGE, PLAN_TO_AGE } from '../constants';
+import {
+  buildBigTravelSchedule,
+  formatTravelCostLakhs,
+  getBigTravelCostAtAge,
+} from './travelPlan';
 import type {
   CalculatorInputs,
   InstrumentKey,
@@ -60,6 +65,7 @@ function simulateToAge(
   const snapshots: YearSnapshot[] = [];
   let feasible = true;
   let yearsInRetirement = 0;
+  const travelSchedule = buildBigTravelSchedule(inputs, retirementAge);
 
   for (let age = inputs.currentAge; age <= PLAN_TO_AGE; age++) {
     const isRetired = age >= retirementAge;
@@ -75,6 +81,16 @@ function simulateToAge(
       portfolio -= carLumpSum;
       yearEvent = `Future car purchase (−${(carLumpSum / 1_00_000).toFixed(0)}L)`;
       if (portfolio < 0) feasible = false;
+    }
+
+    if (isRetired) {
+      const travel = getBigTravelCostAtAge(travelSchedule, age);
+      if (travel) {
+        portfolio -= travel.cost;
+        const travelLabel = `Big travel #${travel.tripNumber} (−${formatTravelCostLakhs(travel.cost)})`;
+        yearEvent = yearEvent ? `${yearEvent}; ${travelLabel}` : travelLabel;
+        if (portfolio < 0) feasible = false;
+      }
     }
 
     for (let month = 0; month < 12; month++) {

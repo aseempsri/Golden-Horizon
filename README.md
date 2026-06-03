@@ -35,3 +35,7 @@ Enable Pages once in repo **Settings → Pages → Build and deployment → Sour
 - Nominee legacy (remaining liquid wealth at age 90)
 
 **Excluded:** rental income, pension, business income, and non-liquid assets.
+
+## Formula reference
+
+See [docs/FORMULAS.md](docs/FORMULAS.md) for a full list of variables, formulas, the monthly simulation loop, and assumptions.

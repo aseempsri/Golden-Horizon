@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Golden Horizon">
+  <defs>
+    <linearGradient id="sun" x1="32" y1="14" x2="32" y2="38" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f5c842"/>
+      <stop offset="1" stop-color="#c9a227"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(32 34) rotate(90) scale(22)">
+      <stop stop-color="#f5c842" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#f5c842" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="horizon" x1="8" y1="34" x2="56" y2="34" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c9a227" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#f5c842"/>
+      <stop offset="1" stop-color="#c9a227" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#12151c"/>
+  <circle cx="32" cy="34" r="22" fill="url(#glow)"/>
+  <path d="M12 34h40" stroke="url(#horizon)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M32 10a24 24 0 0 1 0 48" fill="url(#sun)"/>
+  <path d="M32 10a24 24 0 0 0 0 48" fill="url(#sun)" opacity="0.85"/>
+  <circle cx="32" cy="34" r="13" fill="url(#sun)"/>
+  <path d="M32 8v52" stroke="#5eead4" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <circle cx="32" cy="34" r="2.5" fill="#d4a574"/>
+</svg>

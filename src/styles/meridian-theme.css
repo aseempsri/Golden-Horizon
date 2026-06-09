@@ -1,0 +1,19 @@
+.gh-app--meridian {
+  --accent: #f5c842;
+  --accent-dim: #c9a227;
+  --accent-soft: rgba(245, 200, 66, 0.12);
+  --accent-border: rgba(245, 200, 66, 0.35);
+  --accent-glow: rgba(245, 200, 66, 0.15);
+  --accent-on: #1a1f2e;
+  --hero-gradient: linear-gradient(135deg, #fff 0%, #f5c842 100%);
+  --result-bg: linear-gradient(145deg, rgba(245, 200, 66, 0.12), rgba(245, 200, 66, 0.03));
+  --result-border: rgba(245, 200, 66, 0.25);
+  --btn-gradient: linear-gradient(135deg, #f5c842 0%, #c9a227 100%);
+  --btn-shadow: 0 4px 20px rgba(245, 200, 66, 0.35);
+  --btn-shadow-hover: 0 8px 28px rgba(245, 200, 66, 0.45);
+
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(245, 200, 66, 0.15), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 50%, rgba(167, 139, 250, 0.08), transparent),
+    linear-gradient(165deg, #0f1419 0%, #1a1f2e 45%, #12151c 100%);
+}

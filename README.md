@@ -1,6 +1,9 @@
 # Golden Horizon
 
-**Retirement Freedom Planner** — an interactive React app that estimates when you can fully retire (age 45+) using only liquid assets, with projections through age 90.
+**Retirement Freedom Suite** — two planners under one roof:
+
+- **Freedom Meridian** — earliest age you can fully retire on liquid corpus (gold theme)
+- **Estate Sovereign** — inflation-proof passive income, three-bucket savings, and full estate lifestyle for salary-free living (teal & copper theme)
 
 ## Run locally
 
@@ -26,16 +29,22 @@ After pushing to `main`, GitHub Actions deploys automatically.
 
 Enable Pages once in repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-## What it models
+## Freedom Meridian
 
-- Portfolio split across FD, savings, equity stocks, equity MF, and debt MF (custom return % per instrument)
-- Pre-retirement: salary surplus added to corpus; post-retirement: inflation-adjusted monthly withdrawals
-- Own home vs rental (10% annual rent increase by default)
-- Current and future car purchases with lump-sum costs at chosen ages
-- Big travel plan: up to 10 trips every 3 years for 25 years from retirement (₹10L start, +10% per year from retirement), auto-stops at age 70; short trips excluded
-- Nominee legacy (remaining liquid wealth at age 90)
+- Portfolio split across FD, savings, equity stocks, equity MF, and debt MF
+- Pre-retirement salary surplus; post-retirement inflation-adjusted withdrawals
+- Own home vs rental, cars, big travel plan (10 trips / 25 years)
+- Nominee legacy at age 90
 
-**Excluded:** rental income, pension, business income, and non-liquid assets.
+## Estate Sovereign
+
+- Client lifestyle: extended-family holidays, native inheritance trips, full-time staff, independent house
+- Passive income floor (₹2.5–3L/mo) with 5%+ annual inflation protection
+- Three savings buckets (inflation offset, contingency, big-ticket leisure) reinvested into corpus
+- Periodic replacements: car (5 yr), white goods (7 yr), Diwali & major furnishing, gadgets
+- Finds earliest age to eliminate salary dependency
+
+**Excluded (both):** rental income, pension, business income, and non-liquid assets.
 
 ## Formula reference
 

@@ -14,6 +14,8 @@ npm run dev
 
 Open the URL shown in the terminal (usually `http://localhost:5173`).
 
+**User guide:** [How to use both calculators](https://aseempsri.github.io/Golden-Horizon/#/guide) — field explanations, formulas, and visual walkthrough.
+
 ## Build
 
 ```bash

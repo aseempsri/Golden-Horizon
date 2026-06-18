@@ -32,6 +32,12 @@ export function AppShell() {
             >
               Estate Sovereign
             </NavLink>
+            <NavLink
+              to="/guide"
+              className={({ isActive }) => `gh-nav-tab${isActive ? ' active' : ''}`}
+            >
+              Guide
+            </NavLink>
           </div>
         </div>
       </nav>

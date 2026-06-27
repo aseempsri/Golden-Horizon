@@ -42,6 +42,8 @@ export function FreedomMeridian() {
   const [car1Age, setCar1Age] = useState(DEFAULT_INPUTS.car1Age);
   const [car2Cost, setCar2Cost] = useState(DEFAULT_INPUTS.car2Cost);
   const [car2Age, setCar2Age] = useState(DEFAULT_INPUTS.car2Age);
+  const [car3Cost, setCar3Cost] = useState(DEFAULT_INPUTS.car3Cost);
+  const [car3Age, setCar3Age] = useState(DEFAULT_INPUTS.car3Age);
   const [currentSalary, setCurrentSalary] = useState(DEFAULT_INPUTS.currentSalary);
   const [monthlyExpense, setMonthlyExpense] = useState(DEFAULT_INPUTS.monthlyExpense);
   const [monthlyWithdrawal, setMonthlyWithdrawal] = useState(
@@ -71,6 +73,8 @@ export function FreedomMeridian() {
       car1Age,
       car2Cost,
       car2Age,
+      car3Cost,
+      car3Age,
       currentSalary,
       monthlyExpense,
       monthlyWithdrawal,
@@ -98,6 +102,8 @@ export function FreedomMeridian() {
       car1Age,
       car2Cost,
       car2Age,
+      car3Cost,
+      car3Age,
       currentSalary,
       monthlyExpense,
       monthlyWithdrawal,
@@ -363,6 +369,33 @@ export function FreedomMeridian() {
                       onChange={(e) => setCar2Age(Number(e.target.value) || 60)}
                     />
                     <span className="hint">e.g. 60</span>
+                  </div>
+                </>
+              )}
+              {futureCarsToBuy >= 3 && (
+                <>
+                  <div className="field">
+                    <label htmlFor="car3-cost">Car 3 cost (₹)</label>
+                    <input
+                      id="car3-cost"
+                      type="number"
+                      step={100000}
+                      value={car3Cost}
+                      onChange={(e) => setCar3Cost(Number(e.target.value) || 0)}
+                    />
+                    <span className="hint">e.g. ₹40L</span>
+                  </div>
+                  <div className="field">
+                    <label htmlFor="car3-age">Car 3 at age</label>
+                    <input
+                      id="car3-age"
+                      type="number"
+                      min={currentAge}
+                      max={90}
+                      value={car3Age}
+                      onChange={(e) => setCar3Age(Number(e.target.value) || 70)}
+                    />
+                    <span className="hint">e.g. 70</span>
                   </div>
                 </>
               )}

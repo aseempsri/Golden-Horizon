@@ -75,6 +75,8 @@ export const DEFAULT_INPUTS = {
   car1Age: 50,
   car2Cost: 50_00_000,
   car2Age: 60,
+  car3Cost: 40_00_000,
+  car3Age: 70,
   currentSalary: 3_60_000,
   monthlyExpense: 2_00_000,
   monthlyWithdrawal: 2_00_000,

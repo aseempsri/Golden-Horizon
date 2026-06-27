@@ -47,6 +47,8 @@ export interface CalculatorInputs {
   car1Age: number;
   car2Cost: number;
   car2Age: number;
+  car3Cost: number;
+  car3Age: number;
   currentSalary: number;
   monthlyExpense: number;
   monthlyWithdrawal: number;

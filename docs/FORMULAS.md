@@ -30,6 +30,7 @@ This document describes every formula used in the **Golden Horizon** retirement 
 | \(N_{future}\) | `futureCarsToBuy` | Number of future cars to buy (0–3) |
 | \(C_1, A_1\) | `car1Cost`, `car1Age` | Lump-sum cost and purchase age for future car 1 |
 | \(C_2, A_2\) | `car2Cost`, `car2Age` | Lump-sum cost and purchase age for future car 2 |
+| \(C_3, A_3\) | `car3Cost`, `car3Age` | Lump-sum cost and purchase age for future car 3 |
 | \(T_{base}\) | `bigTravelBaseCost` | First big-travel lump sum (default ₹10L) |
 | \(\delta_T\) | `bigTravelCostYoYPct` | Annual cost escalation on big travel (default 10%) |
 | \(\Delta\) | `travelIntervalYears` | Years between big trips (default 3) |
@@ -61,7 +62,7 @@ This document describes every formula used in the **Golden Horizon** retirement 
 | 4 | **Monthly inflation rate** | \(\displaystyle f_m = (1 + f_{annual}/100)^{1/12} - 1\) | Converts annual withdrawal inflation into a monthly compounding factor. |
 | 5 | **Monthly rent growth rate** | \(\displaystyle g_m = (1 + g_{annual}/100)^{1/12} - 1\) | Used only when `housingType === 'rental'`. If you own your house, rent is 0 and this formula is not applied. |
 | 6 | **Car maintenance (working years)** | \(\displaystyle M_{cars} = N_{cars} \times C_{maint}\) | Fixed monthly outflow deducted from salary surplus while you are still working. |
-| 7 | **Future car lump-sum** | At age \(a\): if \(N_{future} \ge 1\) and \(a = A_1\), add \(C_1\); if \(N_{future} \ge 2\) and \(a = A_2\), add \(C_2\) | One-time deduction from \(P\) at the start of that calendar year (before the monthly loop runs). |
+| 7 | **Future car lump-sum** | At age \(a\): if \(N_{future} \ge 1\) and \(a = A_1\), add \(C_1\); if \(N_{future} \ge 2\) and \(a = A_2\), add \(C_2\); if \(N_{future} \ge 3\) and \(a = A_3\), add \(C_3\) | One-time deduction from \(P\) at the start of that calendar year (before the monthly loop runs). |
 | 7b | **Big travel lump-sum** | Trip at years \(t = 0, \Delta, 2\Delta, \ldots\) from \(A_{ret}\): cost \(T_{base} \times (1 + \delta_T/100)^t\); while \(t < W_T\), trip count \(\le N_{max}\), and \(A_{ret} + t < A_{travel}\) | Deducted once per scheduled year after retirement only. Short trips are excluded. After age \(A_{travel}\), travel is not auto-deducted. |
 | 8 | **Monthly corpus growth** | \(\displaystyle P \leftarrow P \times (1 + r_m)\) | Applied every month to the entire liquid portfolio. |
 | 9 | **Working-year surplus** | \(\displaystyle \text{surplus} = S - E - R_{rent} - M_{cars}\) | Amount added to the corpus each month while age \(a < A_{ret}\). No salary is included after retirement. |

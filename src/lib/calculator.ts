@@ -44,6 +44,9 @@ function getCarCostsAtAge(inputs: CalculatorInputs, age: number): number {
   if (inputs.futureCarsToBuy >= 2 && age === inputs.car2Age) {
     cost += inputs.car2Cost;
   }
+  if (inputs.futureCarsToBuy >= 3 && age === inputs.car3Age) {
+    cost += inputs.car3Cost;
+  }
   return cost;
 }
 

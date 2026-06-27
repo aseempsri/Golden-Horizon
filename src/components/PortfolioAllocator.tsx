@@ -1,4 +1,5 @@
 import { INSTRUMENTS } from '../constants';
+import { NumberInput } from './NumberInput';
 import type { InstrumentKey, PortfolioAllocation, PortfolioRates } from '../types';
 import { allocationTotal } from '../lib/calculator';
 
@@ -54,7 +55,16 @@ export function PortfolioAllocator({
             }
             aria-label={`${inst.label} allocation`}
           />
-          <span className="pct">{allocation[inst.key]}%</span>
+          <NumberInput
+            compact
+            suffix="%"
+            value={allocation[inst.key]}
+            min={0}
+            max={100}
+            step={1}
+            onChange={(v) => onAllocationChange(inst.key, v)}
+            ariaLabel={`${inst.label} allocation percent`}
+          />
         </div>
       ))}
 
@@ -75,7 +85,16 @@ export function PortfolioAllocator({
             onChange={(e) => onRateChange(inst.key, Number(e.target.value))}
             aria-label={`${inst.label} return rate`}
           />
-          <span className="pct">{rates[inst.key]}%</span>
+          <NumberInput
+            compact
+            suffix="%"
+            value={rates[inst.key]}
+            min={inst.minRate}
+            max={inst.maxRate}
+            step={0.5}
+            onChange={(v) => onRateChange(inst.key, v)}
+            ariaLabel={`${inst.label} return rate percent`}
+          />
         </div>
       ))}
     </div>

@@ -9,15 +9,17 @@ import {
   YAxis,
 } from 'recharts';
 import { ESTATE_PAGE } from '../constants/estate';
+import { useResultHeroHighlight } from '../hooks/useResultHeroHighlight';
 import { formatINR } from '../lib/format';
 import type { EstateResult } from '../types/estate';
 
 interface Props {
   result: EstateResult | null;
   weightedReturn: number;
+  highlightTick?: number;
 }
 
-export function EstateResultsPanel({ result, weightedReturn }: Props) {
+export function EstateResultsPanel({ result, weightedReturn, highlightTick = 0 }: Props) {
   if (!result) {
     return (
       <div className="sticky-results">
@@ -38,9 +40,12 @@ export function EstateResultsPanel({ result, weightedReturn }: Props) {
     event: s.event,
   }));
 
+  const heroRef = useResultHeroHighlight(highlightTick, true);
+
   return (
     <div className="sticky-results">
       <motion.div
+        ref={heroRef}
         className="result-hero"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}

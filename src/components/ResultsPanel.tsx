@@ -9,15 +9,17 @@ import {
   YAxis,
 } from 'recharts';
 import { APP_NAME } from '../constants';
+import { useResultHeroHighlight } from '../hooks/useResultHeroHighlight';
 import { formatINR } from '../lib/format';
 import type { SimulationResult } from '../types';
 
 interface Props {
   result: SimulationResult | null;
   weightedReturn: number;
+  highlightTick?: number;
 }
 
-export function ResultsPanel({ result, weightedReturn }: Props) {
+export function ResultsPanel({ result, weightedReturn, highlightTick = 0 }: Props) {
   if (!result) {
     return (
       <div className="sticky-results">
@@ -37,9 +39,12 @@ export function ResultsPanel({ result, weightedReturn }: Props) {
     event: s.event,
   }));
 
+  const heroRef = useResultHeroHighlight(highlightTick, true);
+
   return (
     <div className="sticky-results">
       <motion.div
+        ref={heroRef}
         className="result-hero"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}

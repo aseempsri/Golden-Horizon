@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { EstateResultsPanel } from '../components/EstateResultsPanel';
+import { NumberInput } from '../components/NumberInput';
 import { PortfolioAllocator } from '../components/PortfolioAllocator';
 import { DEFAULT_ESTATE_INPUTS, ESTATE_PAGE } from '../constants/estate';
 import { MIN_AGE } from '../constants';
@@ -91,6 +92,7 @@ export function EstateSovereign() {
   );
 
   const [result, setResult] = useState<EstateResult | null>(null);
+  const [highlightTick, setHighlightTick] = useState(0);
 
   const inputs = useMemo(
     (): EstateInputs => ({
@@ -173,6 +175,7 @@ export function EstateSovereign() {
     const age = clamp(currentAge, MIN_AGE, 89);
     if (age !== currentAge) setCurrentAge(age);
     setResult(findFreedomAge({ ...inputs, currentAge: age }));
+    setHighlightTick((t) => t + 1);
   }, [inputs, allocOk, currentAge]);
 
   const onAllocationChange = (key: InstrumentKey, value: number) => {
@@ -207,48 +210,40 @@ export function EstateSovereign() {
             <div className="field-grid">
               <div className="field">
                 <label htmlFor="es-age">Current age (45+)</label>
-                <input
+                <NumberInput
                   id="es-age"
-                  type="number"
                   min={MIN_AGE}
                   max={89}
                   value={currentAge}
-                  onChange={(e) =>
-                    setCurrentAge(clamp(Number(e.target.value), MIN_AGE, 89))
-                  }
+                  onChange={setCurrentAge}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-networth">Liquid net worth</label>
-                <input
+                <NumberInput
                   id="es-networth"
-                  type="number"
                   step={100000}
                   value={totalNetWorth}
-                  onChange={(e) => setTotalNetWorth(Number(e.target.value) || 0)}
+                  onChange={setTotalNetWorth}
                 />
                 <span className="hint">{formatINR(totalNetWorth, true)}</span>
               </div>
               <div className="field">
                 <label htmlFor="es-salary">Current salary (monthly)</label>
-                <input
+                <NumberInput
                   id="es-salary"
-                  type="number"
                   step={10000}
                   value={currentSalary}
-                  onChange={(e) => setCurrentSalary(Number(e.target.value) || 0)}
+                  onChange={setCurrentSalary}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-pre-expense">Pre-freedom monthly expense</label>
-                <input
+                <NumberInput
                   id="es-pre-expense"
-                  type="number"
                   step={10000}
                   value={preFreedomMonthlyExpense}
-                  onChange={(e) =>
-                    setPreFreedomMonthlyExpense(Number(e.target.value) || 0)
-                  }
+                  onChange={setPreFreedomMonthlyExpense}
                 />
                 <span className="hint">Spend while still on salary</span>
               </div>
@@ -267,14 +262,11 @@ export function EstateSovereign() {
             <div className="field-grid">
               <div className="field">
                 <label htmlFor="es-income">Monthly passive income target</label>
-                <input
+                <NumberInput
                   id="es-income"
-                  type="number"
                   step={10000}
                   value={basePassiveIncomeMonthly}
-                  onChange={(e) =>
-                    setBasePassiveIncomeMonthly(Number(e.target.value) || 0)
-                  }
+                  onChange={setBasePassiveIncomeMonthly}
                 />
                 <span className="hint">
                   Client brief: ₹2.5–3L/mo — set {formatINR(basePassiveIncomeMonthly, true)}
@@ -282,50 +274,45 @@ export function EstateSovereign() {
               </div>
               <div className="field">
                 <label htmlFor="es-inflation">Annual income inflation (%)</label>
-                <input
+                <NumberInput
                   id="es-inflation"
-                  type="number"
                   min={5}
                   max={15}
                   step={0.5}
                   value={incomeInflationPct}
-                  onChange={(e) => setIncomeInflationPct(Number(e.target.value) || 5)}
+                  onChange={setIncomeInflationPct}
+                  emptyFallback={5}
                 />
                 <span className="hint">Minimum 5% inflation protection</span>
               </div>
               <div className="field">
                 <label htmlFor="es-b1">Bucket 1 — inflation offset (%)</label>
-                <input
+                <NumberInput
                   id="es-b1"
-                  type="number"
                   min={0}
                   max={50}
                   value={bucketInflationOffsetPct}
-                  onChange={(e) =>
-                    setBucketInflationOffsetPct(Number(e.target.value) || 0)
-                  }
+                  onChange={setBucketInflationOffsetPct}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-b2">Bucket 2 — contingency (%)</label>
-                <input
+                <NumberInput
                   id="es-b2"
-                  type="number"
                   min={0}
                   max={50}
                   value={bucketContingencyPct}
-                  onChange={(e) => setBucketContingencyPct(Number(e.target.value) || 0)}
+                  onChange={setBucketContingencyPct}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-b3">Bucket 3 — big-ticket leisure (%)</label>
-                <input
+                <NumberInput
                   id="es-b3"
-                  type="number"
                   min={0}
                   max={50}
                   value={bucketBigTicketPct}
-                  onChange={(e) => setBucketBigTicketPct(Number(e.target.value) || 0)}
+                  onChange={setBucketBigTicketPct}
                 />
               </div>
               <div className="field full">
@@ -356,49 +343,41 @@ export function EstateSovereign() {
             <div className="field-grid">
               <div className="field">
                 <label htmlFor="es-holiday-n">Extended-family holidays / year</label>
-                <input
+                <NumberInput
                   id="es-holiday-n"
-                  type="number"
                   min={0}
                   max={6}
                   value={extendedFamilyTripsPerYear}
-                  onChange={(e) =>
-                    setExtendedFamilyTripsPerYear(Number(e.target.value) || 0)
-                  }
+                  onChange={setExtendedFamilyTripsPerYear}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-holiday-cost">Cost per holiday (₹)</label>
-                <input
+                <NumberInput
                   id="es-holiday-cost"
-                  type="number"
                   step={50000}
                   value={extendedFamilyTripCost}
-                  onChange={(e) =>
-                    setExtendedFamilyTripCost(Number(e.target.value) || 0)
-                  }
+                  onChange={setExtendedFamilyTripCost}
                 />
                 <span className="hint">Min ₹6L per trip</span>
               </div>
               <div className="field">
                 <label htmlFor="es-native-n">Native inheritance trips / year</label>
-                <input
+                <NumberInput
                   id="es-native-n"
-                  type="number"
                   min={0}
                   max={12}
                   value={nativeTripsPerYear}
-                  onChange={(e) => setNativeTripsPerYear(Number(e.target.value) || 0)}
+                  onChange={setNativeTripsPerYear}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-native-cost">Cost per native trip (₹)</label>
-                <input
+                <NumberInput
                   id="es-native-cost"
-                  type="number"
                   step={5000}
                   value={nativeTripCost}
-                  onChange={(e) => setNativeTripCost(Number(e.target.value) || 0)}
+                  onChange={setNativeTripCost}
                 />
               </div>
             </div>
@@ -409,42 +388,38 @@ export function EstateSovereign() {
             <div className="field-grid">
               <div className="field">
                 <label htmlFor="es-driver">Driver / month</label>
-                <input
+                <NumberInput
                   id="es-driver"
-                  type="number"
                   step={1000}
                   value={driverMonthly}
-                  onChange={(e) => setDriverMonthly(Number(e.target.value) || 0)}
+                  onChange={setDriverMonthly}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-cook">Cook / month</label>
-                <input
+                <NumberInput
                   id="es-cook"
-                  type="number"
                   step={1000}
                   value={cookMonthly}
-                  onChange={(e) => setCookMonthly(Number(e.target.value) || 0)}
+                  onChange={setCookMonthly}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-clean">Cleaning / month</label>
-                <input
+                <NumberInput
                   id="es-clean"
-                  type="number"
                   step={1000}
                   value={cleaningMonthly}
-                  onChange={(e) => setCleaningMonthly(Number(e.target.value) || 0)}
+                  onChange={setCleaningMonthly}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-manager">Estate manager / month</label>
-                <input
+                <NumberInput
                   id="es-manager"
-                  type="number"
                   step={1000}
                   value={estateManagerMonthly}
-                  onChange={(e) => setEstateManagerMonthly(Number(e.target.value) || 0)}
+                  onChange={setEstateManagerMonthly}
                 />
               </div>
             </div>
@@ -475,26 +450,22 @@ export function EstateSovereign() {
               {!houseOwned && (
                 <div className="field full">
                   <label htmlFor="es-house-cost">Independent house + outhouse (₹)</label>
-                  <input
+                  <NumberInput
                     id="es-house-cost"
-                    type="number"
                     step={500000}
                     value={housePurchaseCost}
-                    onChange={(e) => setHousePurchaseCost(Number(e.target.value) || 0)}
+                    onChange={setHousePurchaseCost}
                   />
                   <span className="hint">Lump sum when salary ends</span>
                 </div>
               )}
               <div className="field">
                 <label htmlFor="es-house-maint">House maintenance / month</label>
-                <input
+                <NumberInput
                   id="es-house-maint"
-                  type="number"
                   step={5000}
                   value={houseMaintenanceMonthly}
-                  onChange={(e) =>
-                    setHouseMaintenanceMonthly(Number(e.target.value) || 0)
-                  }
+                  onChange={setHouseMaintenanceMonthly}
                 />
               </div>
             </div>
@@ -505,93 +476,80 @@ export function EstateSovereign() {
             <div className="field-grid">
               <div className="field">
                 <label htmlFor="es-car-cost">Car replacement cost (₹)</label>
-                <input
+                <NumberInput
                   id="es-car-cost"
-                  type="number"
                   step={100000}
                   value={carReplacementCost}
-                  onChange={(e) => setCarReplacementCost(Number(e.target.value) || 0)}
+                  onChange={setCarReplacementCost}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-car-yrs">Car change every (years)</label>
-                <input
+                <NumberInput
                   id="es-car-yrs"
-                  type="number"
                   min={3}
                   max={10}
                   value={carReplacementIntervalYears}
-                  onChange={(e) =>
-                    setCarReplacementIntervalYears(Number(e.target.value) || 5)
-                  }
+                  onChange={setCarReplacementIntervalYears}
+                  emptyFallback={5}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-wg-cost">White goods cycle cost (₹)</label>
-                <input
+                <NumberInput
                   id="es-wg-cost"
-                  type="number"
                   step={50000}
                   value={whiteGoodsCost}
-                  onChange={(e) => setWhiteGoodsCost(Number(e.target.value) || 0)}
+                  onChange={setWhiteGoodsCost}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-wg-yrs">White goods every (years)</label>
-                <input
+                <NumberInput
                   id="es-wg-yrs"
-                  type="number"
                   min={3}
                   max={15}
                   value={whiteGoodsIntervalYears}
-                  onChange={(e) =>
-                    setWhiteGoodsIntervalYears(Number(e.target.value) || 7)
-                  }
+                  onChange={setWhiteGoodsIntervalYears}
+                  emptyFallback={7}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-minor-furn">Diwali minor furnishing / year (₹)</label>
-                <input
+                <NumberInput
                   id="es-minor-furn"
-                  type="number"
                   step={10000}
                   value={minorFurnishingAnnual}
-                  onChange={(e) =>
-                    setMinorFurnishingAnnual(Number(e.target.value) || 0)
-                  }
+                  onChange={setMinorFurnishingAnnual}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-gadgets">Gadgets upgrade / year (₹)</label>
-                <input
+                <NumberInput
                   id="es-gadgets"
-                  type="number"
                   step={10000}
                   value={gadgetsAnnual}
-                  onChange={(e) => setGadgetsAnnual(Number(e.target.value) || 0)}
+                  onChange={setGadgetsAnnual}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-major-furn">Major furnishing cost (₹)</label>
-                <input
+                <NumberInput
                   id="es-major-furn"
-                  type="number"
                   step={100000}
                   value={majorFurnishingCost}
-                  onChange={(e) => setMajorFurnishingCost(Number(e.target.value) || 0)}
+                  onChange={setMajorFurnishingCost}
                 />
               </div>
               <div className="field">
                 <label htmlFor="es-major-yrs">Major furnishing every (years)</label>
-                <input
+                <NumberInput
                   id="es-major-yrs"
-                  type="number"
                   min={3}
                   max={15}
                   value={majorFurnishingIntervalYears}
-                  onChange={(e) =>
-                    setMajorFurnishingIntervalYears(Number(e.target.value) || 7)
-                  }
+                  onChange={setMajorFurnishingIntervalYears}
+                  emptyFallback={7}
                 />
               </div>
             </div>
@@ -628,7 +586,11 @@ export function EstateSovereign() {
           </footer>
         </div>
 
-        <EstateResultsPanel result={result} weightedReturn={weightedReturn} />
+        <EstateResultsPanel
+          result={result}
+          weightedReturn={weightedReturn}
+          highlightTick={highlightTick}
+        />
       </div>
     </div>
   );

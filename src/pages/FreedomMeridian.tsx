@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { PortfolioAllocator } from '../components/PortfolioAllocator';
+import { NumberInput } from '../components/NumberInput';
 import { ResultsPanel } from '../components/ResultsPanel';
 import { SalaryInfoTooltip } from '../components/SalaryDisclaimer';
 import { MERIDIAN_PAGE } from '../constants/estate';
@@ -58,6 +59,7 @@ export function FreedomMeridian() {
     DEFAULT_INPUTS.enableTravelPlan,
   );
   const [result, setResult] = useState<SimulationResult | null>(null);
+  const [highlightTick, setHighlightTick] = useState(0);
 
   const inputs = useMemo(
     (): CalculatorInputs => ({
@@ -132,6 +134,7 @@ export function FreedomMeridian() {
     const age = clamp(currentAge, MIN_AGE, 89);
     if (age !== currentAge) setCurrentAge(age);
     setResult(findRetirementAge({ ...inputs, currentAge: age }));
+    setHighlightTick((t) => t + 1);
   }, [inputs, allocOk, currentAge]);
 
   const onAllocationChange = (key: InstrumentKey, value: number) => {
@@ -166,36 +169,31 @@ export function FreedomMeridian() {
             <div className="field-grid">
               <div className="field">
                 <label htmlFor="age">Current age (45+)</label>
-                <input
+                <NumberInput
                   id="age"
-                  type="number"
                   min={MIN_AGE}
                   max={89}
                   value={currentAge}
-                  onChange={(e) =>
-                    setCurrentAge(clamp(Number(e.target.value), MIN_AGE, 89))
-                  }
+                  onChange={setCurrentAge}
                 />
               </div>
               <div className="field">
                 <label htmlFor="networth">Total net worth (liquid)</label>
-                <input
+                <NumberInput
                   id="networth"
-                  type="number"
                   step={100000}
                   value={totalNetWorth}
-                  onChange={(e) => setTotalNetWorth(Number(e.target.value) || 0)}
+                  onChange={setTotalNetWorth}
                 />
                 <span className="hint">{formatINR(totalNetWorth, true)}</span>
               </div>
               <div className="field">
                 <label htmlFor="expense">Monthly living expense</label>
-                <input
+                <NumberInput
                   id="expense"
-                  type="number"
                   step={10000}
                   value={monthlyExpense}
-                  onChange={(e) => setMonthlyExpense(Number(e.target.value) || 0)}
+                  onChange={setMonthlyExpense}
                 />
                 <span className="hint">Default ₹2L — pre-retirement spend</span>
               </div>
@@ -215,12 +213,11 @@ export function FreedomMeridian() {
                     endLabel="retirement"
                   />
                 </div>
-                <input
+                <NumberInput
                   id="salary"
-                  type="number"
                   step={10000}
                   value={currentSalary}
-                  onChange={(e) => setCurrentSalary(Number(e.target.value) || 0)}
+                  onChange={setCurrentSalary}
                 />
                 <span className="hint">e.g. ₹3.6L — saved until retirement</span>
               </div>
@@ -256,26 +253,22 @@ export function FreedomMeridian() {
               <div className="field-grid" style={{ marginTop: '1rem' }}>
                 <div className="field">
                   <label htmlFor="rent">Monthly rent today</label>
-                  <input
+                  <NumberInput
                     id="rent"
-                    type="number"
                     step={5000}
                     value={monthlyRent}
-                    onChange={(e) => setMonthlyRent(Number(e.target.value) || 0)}
+                    onChange={setMonthlyRent}
                   />
                 </div>
                 <div className="field">
                   <label htmlFor="rent-inc">Annual rent increase (%)</label>
-                  <input
+                  <NumberInput
                     id="rent-inc"
-                    type="number"
                     min={0}
                     max={25}
                     step={0.5}
                     value={rentalIncrementPct}
-                    onChange={(e) =>
-                      setRentalIncrementPct(Number(e.target.value) || 0)
-                    }
+                    onChange={setRentalIncrementPct}
                   />
                   <span className="hint">Default 10% yearly</span>
                 </div>
@@ -308,14 +301,11 @@ export function FreedomMeridian() {
               </div>
               <div className="field">
                 <label htmlFor="car-maint">Maintenance / month (all cars)</label>
-                <input
+                <NumberInput
                   id="car-maint"
-                  type="number"
                   step={5000}
                   value={carMaintenanceMonthly}
-                  onChange={(e) =>
-                    setCarMaintenanceMonthly(Number(e.target.value) || 0)
-                  }
+                  onChange={setCarMaintenanceMonthly}
                 />
               </div>
               <div className="field full">
@@ -337,24 +327,23 @@ export function FreedomMeridian() {
                 <>
                   <div className="field">
                     <label htmlFor="car1-cost">Car 1 cost (₹)</label>
-                    <input
+                    <NumberInput
                       id="car1-cost"
-                      type="number"
                       step={100000}
                       value={car1Cost}
-                      onChange={(e) => setCar1Cost(Number(e.target.value) || 0)}
+                      onChange={setCar1Cost}
                     />
                     <span className="hint">e.g. ₹30L</span>
                   </div>
                   <div className="field">
                     <label htmlFor="car1-age">Car 1 at age</label>
-                    <input
+                    <NumberInput
                       id="car1-age"
-                      type="number"
                       min={currentAge}
                       max={90}
                       value={car1Age}
-                      onChange={(e) => setCar1Age(Number(e.target.value) || 50)}
+                      onChange={setCar1Age}
+                      emptyFallback={50}
                     />
                     <span className="hint">e.g. 50 (5 yrs from 45)</span>
                   </div>
@@ -364,24 +353,23 @@ export function FreedomMeridian() {
                 <>
                   <div className="field">
                     <label htmlFor="car2-cost">Car 2 cost (₹)</label>
-                    <input
+                    <NumberInput
                       id="car2-cost"
-                      type="number"
                       step={100000}
                       value={car2Cost}
-                      onChange={(e) => setCar2Cost(Number(e.target.value) || 0)}
+                      onChange={setCar2Cost}
                     />
                     <span className="hint">e.g. ₹50L</span>
                   </div>
                   <div className="field">
                     <label htmlFor="car2-age">Car 2 at age</label>
-                    <input
+                    <NumberInput
                       id="car2-age"
-                      type="number"
                       min={currentAge}
                       max={90}
                       value={car2Age}
-                      onChange={(e) => setCar2Age(Number(e.target.value) || 60)}
+                      onChange={setCar2Age}
+                      emptyFallback={60}
                     />
                     <span className="hint">e.g. 60</span>
                   </div>
@@ -391,24 +379,23 @@ export function FreedomMeridian() {
                 <>
                   <div className="field">
                     <label htmlFor="car3-cost">Car 3 cost (₹)</label>
-                    <input
+                    <NumberInput
                       id="car3-cost"
-                      type="number"
                       step={100000}
                       value={car3Cost}
-                      onChange={(e) => setCar3Cost(Number(e.target.value) || 0)}
+                      onChange={setCar3Cost}
                     />
                     <span className="hint">e.g. ₹40L</span>
                   </div>
                   <div className="field">
                     <label htmlFor="car3-age">Car 3 at age</label>
-                    <input
+                    <NumberInput
                       id="car3-age"
-                      type="number"
                       min={currentAge}
                       max={90}
                       value={car3Age}
-                      onChange={(e) => setCar3Age(Number(e.target.value) || 70)}
+                      onChange={setCar3Age}
+                      emptyFallback={70}
                     />
                     <span className="hint">e.g. 70</span>
                   </div>
@@ -471,14 +458,11 @@ export function FreedomMeridian() {
             <div className="field-grid">
               <div className="field">
                 <label htmlFor="withdraw">Monthly withdrawal at retirement</label>
-                <input
+                <NumberInput
                   id="withdraw"
-                  type="number"
                   step={10000}
                   value={monthlyWithdrawal}
-                  onChange={(e) =>
-                    setMonthlyWithdrawal(Number(e.target.value) || 0)
-                  }
+                  onChange={setMonthlyWithdrawal}
                 />
                 <span className="hint">
                   Year 1: {formatINR(monthlyWithdrawal)} → +{inflationPct}% each year
@@ -486,14 +470,13 @@ export function FreedomMeridian() {
               </div>
               <div className="field">
                 <label htmlFor="inflation">Annual inflation on withdrawals (%)</label>
-                <input
+                <NumberInput
                   id="inflation"
-                  type="number"
                   min={0}
                   max={20}
                   step={0.5}
                   value={inflationPct}
-                  onChange={(e) => setInflationPct(Number(e.target.value) || 0)}
+                  onChange={setInflationPct}
                 />
                 <span className="hint">Default 6% — compounds yearly</span>
               </div>
@@ -516,7 +499,11 @@ export function FreedomMeridian() {
           </footer>
         </div>
 
-        <ResultsPanel result={result} weightedReturn={weightedReturn} />
+        <ResultsPanel
+          result={result}
+          weightedReturn={weightedReturn}
+          highlightTick={highlightTick}
+        />
       </div>
     </div>
   );

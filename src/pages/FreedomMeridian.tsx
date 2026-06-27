@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { PortfolioAllocator } from '../components/PortfolioAllocator';
 import { ResultsPanel } from '../components/ResultsPanel';
+import { SalaryInfoTooltip } from '../components/SalaryDisclaimer';
 import { MERIDIAN_PAGE } from '../constants/estate';
 import {
   BIG_TRAVEL_BASE_COST,
@@ -199,7 +200,21 @@ export function FreedomMeridian() {
                 <span className="hint">Default ₹2L — pre-retirement spend</span>
               </div>
               <div className="field">
-                <label htmlFor="salary">Current salary (monthly)</label>
+                <div className="field-label-row">
+                  <label htmlFor="salary">Current salary (monthly)</label>
+                  <SalaryInfoTooltip
+                    currentAge={currentAge}
+                    retirementAge={result?.retirementAge ?? null}
+                    currentSalary={currentSalary}
+                    monthlyExpense={monthlyExpense}
+                    monthlyWithdrawal={monthlyWithdrawal}
+                    housingType={housingType}
+                    monthlyRent={monthlyRent}
+                    carsOwned={carsOwned}
+                    carMaintenanceMonthly={carMaintenanceMonthly}
+                    endLabel="retirement"
+                  />
+                </div>
                 <input
                   id="salary"
                   type="number"

@@ -249,6 +249,166 @@
   font-weight: 500;
 }
 
+.field-label-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.field-label-row label {
+  margin: 0;
+}
+
+.info-tooltip {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.info-tooltip__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--muted);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  font-style: italic;
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1;
+  cursor: help;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.info-tooltip__trigger:hover,
+.info-tooltip__trigger:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.info-tooltip__panel {
+  width: min(33.8rem, calc(100vw - 2rem));
+  max-height: min(80vh, 41.6rem);
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+}
+
+.info-tooltip__panel--portal {
+  position: fixed;
+  z-index: 10000;
+  animation: info-tooltip-in 0.18s ease;
+  padding: 1.3rem 1.5rem;
+  background: #151922;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  color: #e8e6e3;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #c8ced8;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer__lead {
+  color: #f3f4f6;
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 1.15rem;
+  padding-bottom: 1rem;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer__heading {
+  color: #f5c842;
+  font-size: 0.95rem;
+  margin-top: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer__text,
+.info-tooltip__panel--portal .salary-disclaimer__list,
+.info-tooltip__panel--portal .salary-disclaimer__oneline {
+  color: #c8ced8;
+  font-size: 1.05rem;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer__list li {
+  margin-bottom: 0.5rem;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer strong,
+.info-tooltip__panel--portal .salary-disclaimer__formula,
+.info-tooltip__panel--portal .salary-disclaimer__table td,
+.info-tooltip__panel--portal .salary-disclaimer__total td {
+  color: #f3f4f6;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer__formula {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 1rem;
+  padding: 0.6rem 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer__table {
+  font-size: 1.05rem;
+  margin: 0.65rem 0 0.9rem;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer__table th,
+.info-tooltip__panel--portal .salary-disclaimer__table td {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  padding: 0.55rem 0.6rem;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer__table thead th {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.info-tooltip__panel--portal .salary-disclaimer__oneline {
+  border-top-color: rgba(255, 255, 255, 0.15);
+  font-size: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.info-tooltip__panel--portal::-webkit-scrollbar {
+  width: 10px;
+}
+
+.info-tooltip__panel--portal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+@keyframes info-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .field input[type='number'],
 .field input[type='text'] {
   background: rgba(0, 0, 0, 0.25);
@@ -552,6 +712,112 @@
 
 .disclaimer strong {
   color: var(--text);
+}
+
+.salary-disclaimer {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  border-radius: 12px;
+  background: rgba(22, 26, 36, 0.98);
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.55;
+  text-align: left;
+}
+
+.salary-disclaimer__lead {
+  margin: 0 0 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.salary-disclaimer__heading {
+  margin: 1rem 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.salary-disclaimer__text {
+  margin: 0.35rem 0;
+}
+
+.salary-disclaimer__list {
+  margin: 0.35rem 0 0.5rem;
+  padding-left: 1.15rem;
+}
+
+.salary-disclaimer__list--compact {
+  margin-bottom: 0.75rem;
+}
+
+.salary-disclaimer__list li {
+  margin-bottom: 0.35rem;
+}
+
+.salary-disclaimer__list li:last-child {
+  margin-bottom: 0;
+}
+
+.salary-disclaimer__formula {
+  margin-top: 0.35rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--text);
+}
+
+.salary-disclaimer__table {
+  width: 100%;
+  margin: 0.5rem 0 0.75rem;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.salary-disclaimer__table th,
+.salary-disclaimer__table td {
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.salary-disclaimer__table th:last-child,
+.salary-disclaimer__table td:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.salary-disclaimer__table thead th {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.salary-disclaimer__total td {
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: none;
+}
+
+.salary-disclaimer__oneline {
+  margin: 0.85rem 0 0;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+
+.salary-disclaimer strong {
+  color: var(--text);
+  font-weight: 600;
 }
 
 .calc-btn {
